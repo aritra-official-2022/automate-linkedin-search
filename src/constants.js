@@ -1,0 +1,1 @@
+export const CURRENT_URL = "https://www.linkedin.com/login";
