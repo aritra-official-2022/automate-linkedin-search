@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { CURRENT_URL } from './constants.js';
-import { Helper } from './lib/helper.js';
+import { LoginBot } from './lib/loginBot.js';
 
 dotenv.config();
 
@@ -19,8 +19,13 @@ app.get("/", (req, res) => {
 app.post("/login/bot", async (req, res) => {
     let urlToBeLoggedIn = CURRENT_URL;
     try {
-        let helperInstance = new Helper();
-        let htmlData = await helperInstance.fetchPuppeteeHTML(urlToBeLoggedIn);
+        let username = null;
+        let helperInstance = new LoginBot();
+        let loginSuccess = await helperInstance.fetchPuppeteerHTML();
+        if(loginSuccess) {
+            username = await helperInstance.getProfileName();
+            console.log("User name of the user is - ",username);
+        }
         console.log("Fetched HTML data - ", htmlData);
         res.status(200).send("HTML Fetched Successfully");
     } catch (err) {
